@@ -5,7 +5,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
 
   async function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault();
+    const res = 
   }
   return (
     <div className="bg-blue-50 h-screen flex items-center">
@@ -24,7 +24,7 @@ export default function Register() {
           placeholder="password"
           className="block w-full rounded-sm p-2 mb-2 border"
         />
-        <button className="bg-blue-500 text-white block w-full rounded-sm p-2">
+        <button className="bg-blue-500 text-white block w-full rounded-sm p-2" onClick={handleSubmit}>
           Register
         </button>
       </form>
