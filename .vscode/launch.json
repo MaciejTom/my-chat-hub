@@ -11,12 +11,15 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "args": ["${relativeFile}"],
             "program": "${workspaceFolder}\\api\\index.ts",
-            "runtimeArgs": ["-r", "ts-node/register", "-r", "tsconfig-paths/register"],
+            "runtimeArgs": ["--nolazy", "-r", "ts-node/register", "-r", "tsconfig-paths/register"],
             "console": "integratedTerminal",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
-            ]
+            ],
+            "cwd": "${workspaceRoot}/api",
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }

@@ -9,10 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const User = require('../models/User');
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { login, password } = req.body;
+    const user = yield User.create(Object.assign({}, req.body));
 });
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { login, password } = req.body;
+    console.log("LOGIN LOGIN LOGIN");
+    res.status(200).json({ data: "LOGIN" });
 });
 module.exports = { register, login };
