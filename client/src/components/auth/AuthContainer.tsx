@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import {LogViewState} from '../../models/LogViewState'
+import {LogViewState} from '../../models/logViewState'
 import axios from "axios";
 import Login from './Login'
 import Register from './Register'
