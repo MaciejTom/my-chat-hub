@@ -1,26 +1,31 @@
 import React, { SyntheticEvent, useState, ChangeEvent } from "react";
-import { logInToChat } from "../../api/authApi";
+import { registerOnChat } from "../../api/authApi";
 import { User } from "../../models/user";
 import { authValidator } from "../../utils/authValidator";
-authValidator;
-interface LoginProps {
-  goToRegister: () => void;
-}
+import { UseAuthUser } from "../../hooks/UseAuthUser";
+import { useNavigate } from "react-router-dom";
 
-export default function Login(props: LoginProps) {
+export function RegisterComponent() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
   } as User);
-  const [authValidationError, setAuthValidationError] = useState<string>("");
 
+  const [authValidationError, setAuthValidationError] = useState<string>("");
+  const { setUser: setGlobalUser } = UseAuthUser();
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
-    // const user: User = {username: username, password: password};
-    if (!authValidator(user, setAuthValidationError)) {
-      return;
+    if (!authValidator(user, setAuthValidationError)) return;
+
+    const res = await registerOnChat(user);
+    if (res.error) {
+      setAuthValidationError(res.error);
     }
-    const res = await logInToChat(user);
+    if (res.respond) {
+      setGlobalUser(user.username);
+    }
   }
   const handleUserChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -31,39 +36,43 @@ export default function Login(props: LoginProps) {
       [e.target.name]: value,
     });
   };
+  const navigateToLogin = () => {
+    navigate("/login");
+  };
   return (
-    <div className="bg-blue-50 h-screen flex items-center">
+    <div className="flex items-center mt-28 sm:mt-40">
+      <h2>Register on the chat hub!</h2>
       <form className="w-64 mx-auto mb-12" onSubmit={handleSubmit}>
         <input
           value={user.username}
           onChange={(e) => handleUserChange(e)}
           type="text"
           placeholder="username"
+          className="block w-full rounded-sm p-2 mb-2 border text-black"
           name="username"
-          className="block w-full rounded-sm p-2 mb-2 border"
         />
         <input
           value={user.password}
           onChange={(e) => handleUserChange(e)}
           type="password"
           placeholder="password"
-          className="block w-full rounded-sm p-2 mb-2 border"
           name="password"
+          className="block w-full rounded-sm p-2 mb-2 border text-black"
         />
         <button className="bg-blue-500 text-white block w-full rounded-sm p-2">
-          Login
+          Register
         </button>
         <div className="text-center my-2">
           <div>
-            Dont have an account?
-            <button className="ml-1" onClick={props.goToRegister}>
-              Register
+            Already a member?
+            <button className="ml-1" onClick={navigateToLogin}>
+              Login here
             </button>
           </div>
         </div>
         <div className="text-center h-12">
           {authValidationError && (
-            <p className="text-red-500 font-bold p-2 border-solid border-2 border-red-600 rounded">
+            <p className="text-red-500 font-bold p-2 border-solid border-2 border-red-600 rounded bg-redTransparent">
               {authValidationError}
             </p>
           )}

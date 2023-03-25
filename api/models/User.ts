@@ -36,7 +36,7 @@ UserSchema.pre("save", async function () {
 
 UserSchema.methods.createJWT = function (): string {
   return jwt.sign(
-    { userId: this._id, name: this.name },
+    { userId: this._id, username: this.username },
     process.env.JWT_SECRET as string,
     {
       expiresIn: process.env.JWT_LIFETIME,
@@ -49,5 +49,4 @@ UserSchema.methods.comparePassword = async function (
   const isMatch = await bcrypt.compare(canditatePassword, this.password);
   return isMatch;
 };
-
 export const User: Model<IUserDb> = model<IUserDb>("User", UserSchema);

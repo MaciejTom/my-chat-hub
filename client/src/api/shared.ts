@@ -1,8 +1,7 @@
 import { ApiMethod } from '../models/authorization/apiRequest';
 import { headersWithAuth } from './settings';
-import bcrypt from 'bcryptjs';
 
-export const baseUri = 'http://localhost:4000/api/v1'
+export const baseUri = import.meta.env.VITE_API_URL;
 export const authController = `${baseUri}/auth`;
 
 export const postRequestInit = (body: any) => {
@@ -10,6 +9,7 @@ export const postRequestInit = (body: any) => {
     method: ApiMethod.post,
     headers: headersWithAuth(),
     body: JSON.stringify(body),
+    credentials: "include" as RequestCredentials,
   };
 };
 
@@ -17,10 +17,6 @@ export const getRequestInit = () => {
   return {
     method: ApiMethod.get,
     headers: headersWithAuth(),
+    credentials: "include" as RequestCredentials,
   };
 };
-
-
-export const hashPassword = (password: string) => {
-    return bcrypt.hash(password, 10);
-}

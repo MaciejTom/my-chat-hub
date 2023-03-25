@@ -15,9 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv = require("dotenv").config();
 const connectDB = require('./db/connect');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
+require("express-async-errors");
 //ROUTES
-const registerRouter = require("./routes/auth");
+const auth_1 = require("./routes/auth");
+const notFoundMiddleware = require('./middleware/not-found');
+const error_handler_1 = require("./middleware/error-handler");
 const cors = require('cors');
 const app = (0, express_1.default)();
 app.use(cors({
@@ -25,7 +28,8 @@ app.use(cors({
     origin: process.env.CLIENT_URL,
 }));
 app.use(express_1.default.json());
-// app.use(cookieParser());
+// app.use(notFoundMiddleware);
+app.use(cookieParser());
 const port = 4000;
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -35,7 +39,8 @@ app.use(function (req, res, next) {
 app.get("/", (req, res) => {
     res.send("Express + TypeScript Server");
 });
-app.use("/api/v1/auth", registerRouter);
+app.use("/api/v1/auth", auth_1.router);
+app.use(error_handler_1.errorHandlerMiddleware);
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     const dbAddress = process.env.MONGO_URI;
     if (dbAddress) {

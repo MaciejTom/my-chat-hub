@@ -1,22 +1,31 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { AuthProvider } from "./contexts/authContext";
-import Register from "./components/auth/AuthContainer";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route } from "react-router-dom";
+import { PrivateRoute } from "./routers/PrivateRoute";
+import { AuthUserProvider } from "./contexts/AuthUserContext";
+import Login from "./pages/LoginPage";
+import { Home } from "./pages/Home";
+import RegisterPage from "./pages/RegisterPage";
+import { ChatPage } from "./pages/ChatPage";
+import { Layout } from "./components/layout/Layout";
 
 function App() {
   return (
-    <AuthProvider>
+    <div className="bg-[url('/public/background.png')] bg-cover h-screen text-white">
+    <AuthUserProvider>
       <Routes>
-        <Route path="/" element={<Register />}/>
-        <Route path="/Login&Register" element={<Register />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/chat" element={<PrivateRoute children={<ChatPage/>}/>}/>
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<div>not found</div>} />
+        </Route>
       </Routes>
-      <ToastContainer />
-    </AuthProvider>
+      <ToastContainer position="bottom-right"/>
+    </AuthUserProvider>
+    </div>
   );
 }
 

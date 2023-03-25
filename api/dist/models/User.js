@@ -20,19 +20,21 @@ const UserSchema = new mongoose_1.Schema({
     username: {
         type: String,
         required: [true, "Please provide name"],
-        maxlength: 50,
+        maxlength: 14,
         minlength: 3,
         uniq: true,
     },
     password: {
         type: String,
         required: [true, "Please provide password"],
-        minlength: 6,
+        minlength: 8,
     },
 }, { timestamps: true });
-UserSchema.pre('save', function () {
+UserSchema.pre("save", function () {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        const salt = yield bcryptjs_1.default.genSalt(10);
+        const saltTime = (_a = Number(process.env.BCRYPTO_SALT)) !== null && _a !== void 0 ? _a : 10;
+        const salt = yield bcryptjs_1.default.genSalt(saltTime);
         this.password = yield bcryptjs_1.default.hash(this.password, salt);
     });
 });
