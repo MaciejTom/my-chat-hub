@@ -29,7 +29,9 @@ export const login = async (req: Request, res: Response) => {
   }
   // compare password
   const token = user.createJWT();
-  res.status(StatusCodes.OK).json({ user: { name: user.username }, token });
+  res.cookie('token', token, {sameSite:'none', secure:true}).json({
+    id: user._id,
+  });
 };
 export const authUser = (req: Request, res: Response) => {
   const token = req.cookies?.token;

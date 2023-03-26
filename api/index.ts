@@ -3,10 +3,14 @@ const dotenv = require("dotenv").config();
 const connectDB = require("./db/connect");
 const cookieParser = require("cookie-parser");
 import "express-async-errors";
+import WebSocket, {WebSocketServer} from 'ws'
+import http from "http";
 //ROUTES
 import { router as registerRouter } from "./routes/auth";
 const notFoundMiddleware = require("./middleware/not-found");
 import { errorHandlerMiddleware } from "./middleware/error-handler";
+import {onConnection} from './handlers/connection';
+
 
 const cors = require("cors");
 const app: Express = express();
@@ -33,14 +37,28 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/auth", registerRouter);
 app.use(errorHandlerMiddleware);
 
+/////WEB SOCKET
+
+
+
 const start = async () => {
   const dbAddress = process.env.MONGO_URI;
   if (dbAddress) {
     try {
       await connectDB(dbAddress);
-      app.listen(port, () =>
+      const server = app.listen(port, () =>
         console.log(`Server is listening on port ${port}...`)
       );
+      const wss = new WebSocketServer({server});
+      wss.on('connection', (connection: WebSocket, req: http.IncomingMessage) => onConnection(connection, req));
+      [...wss.clients].forEach(client => {
+        client.send(JSON.stringify(
+          [...wss.clients].map(c => {
+            return {userId: c, username: c.username}
+          })
+        ))
+      })
+     
     } catch (error) {
       console.log(error);
     }

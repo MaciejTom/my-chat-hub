@@ -4,7 +4,9 @@ import { authUser } from "../api/authApi";
 export interface AuthUserContextInterface {
   user: null | string,
   isLoading: boolean,
-  setUser: (user: any) => void,
+  setUser: (user: string | null) => void,
+  id: null | number,
+  setId: (id: null | number) => void
 }
 
 //set initial value of user to null (pre-login)
@@ -32,7 +34,9 @@ export function AuthUserProvider(props: React.PropsWithChildren<any>) {
       value={{
         user,
         setUser,
-        isLoading
+        isLoading,
+        id,
+        setId
       }}
     >
       {props.children}

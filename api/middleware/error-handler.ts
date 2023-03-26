@@ -5,7 +5,7 @@ import {Request, Response, NextFunction } from "express";
 export const errorHandlerMiddleware = (err: CustomAPIError, req: Request, res: Response, next: NextFunction) => {
   console.log(err)
   if (err instanceof CustomAPIError) {
-    return res.status(err.statusCode).json({ msg: err.message })
+    return res.status(err.statusCode).json({ error: err.message })
   }
   let customError = {
     // set default
