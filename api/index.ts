@@ -3,14 +3,16 @@ const dotenv = require("dotenv").config();
 const connectDB = require("./db/connect");
 const cookieParser = require("cookie-parser");
 import "express-async-errors";
-import WebSocket, {WebSocketServer} from 'ws'
+import WebSocket, { WebSocketServer } from "ws";
+import ws from "ws";
 import http from "http";
 //ROUTES
-import { router as registerRouter } from "./routes/auth";
+import { authRouter } from "./routes/auth";
+import { messageRouter } from "./routes/message";
 const notFoundMiddleware = require("./middleware/not-found");
 import { errorHandlerMiddleware } from "./middleware/error-handler";
-import {onConnection} from './handlers/connection';
-
+import { onConnection } from "./handlers/connection";
+import { ExtendedWebSocket } from "./models/ExtendedWebSocket";
 
 const cors = require("cors");
 const app: Express = express();
@@ -34,12 +36,11 @@ const port = 4000;
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
-app.use("/api/v1/auth", registerRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/chat", messageRouter);
 app.use(errorHandlerMiddleware);
 
 /////WEB SOCKET
-
-
 
 const start = async () => {
   const dbAddress = process.env.MONGO_URI;
@@ -49,16 +50,13 @@ const start = async () => {
       const server = app.listen(port, () =>
         console.log(`Server is listening on port ${port}...`)
       );
-      const wss = new WebSocketServer({server});
-      wss.on('connection', (connection: WebSocket, req: http.IncomingMessage) => onConnection(connection, req));
-      [...wss.clients].forEach(client => {
-        client.send(JSON.stringify(
-          [...wss.clients].map(c => {
-            return {userId: c, username: c.username}
-          })
-        ))
-      })
-     
+      const wss = new WebSocketServer({ server });
+      wss.on(
+        "connection",
+        (connection: ExtendedWebSocket, req: http.IncomingMessage) =>
+          onConnection(connection, req, wss)
+      );
+      console.log("NEW CONNECTION");
     } catch (error) {
       console.log(error);
     }

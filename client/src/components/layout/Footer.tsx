@@ -4,6 +4,6 @@ type Props = {}
 
 export const Footer = (props: Props) => {
   return (
-    <div>Footer</div>
+    <footer className='text-center mt-auto py-3 font-bold font-DM'>Created by Maciej Tomaszewicz</footer>
   )
 }

@@ -12,7 +12,7 @@ import { Layout } from "./components/layout/Layout";
 
 function App() {
   return (
-    <div className="bg-[url('/public/background.png')] bg-cover h-screen text-white">
+    <div className="bg-[url('/public/background.png')] bg-cover text-white">
     <AuthUserProvider>
       <Routes>
         <Route element={<Layout />}>

@@ -3,6 +3,7 @@ import { headersWithAuth } from './settings';
 
 export const baseUri = import.meta.env.VITE_API_URL;
 export const authController = `${baseUri}/auth`;
+export const chatController = `${baseUri}/chat`;
 
 export const postRequestInit = (body: any) => {
   return {

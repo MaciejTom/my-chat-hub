@@ -2,9 +2,9 @@ import express, { Express, Request, Response } from "express";
 
 import { register, login, authUser, logout } from "../controllers/auth";
 
-export const router = express.Router();
+export const authRouter = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.get("/authUser", authUser);
-router.get("/logout", logout);
+authRouter.post("/register", register);
+authRouter.post("/login", login);
+authRouter.get("/authUser", authUser);
+authRouter.get("/logout", logout);

@@ -18,7 +18,7 @@ export const Header = () => {
 
   return (
     <>
-      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 mb-3 text-white font-DM text-3xl">
+      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 text-white font-DM text-3xl">
         <div className="container px-4 mx-auto flex">
           <div className="w-full flex items-center ">
             <img

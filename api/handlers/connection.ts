@@ -2,10 +2,22 @@
 import http from "http";
 import jwt from "jsonwebtoken";
 import {JwtPayload} from '../models/JwtPayload';
-import WebSocket from 'ws';
+import {ExtendedWebSocket} from '../models/ExtendedWebSocket';
+import { WebSocketServer } from "ws";
+import {onMessage} from './onMessage';
+export const onConnection = async (connection: ExtendedWebSocket, req: http.IncomingMessage, wss: WebSocketServer) => {
 
-export const onConnection = (connection: WebSocket, req: http.IncomingMessage) => {
-  const cookies = req.headers.cookie;
+  const notifyAboutOnlinePeople = () => {
+    [...wss.clients].forEach(client => { 
+      client.send(JSON.stringify({
+        online: [...wss.clients].map(c => ({userId:c.userId,username:c.username})),
+      }));
+    });
+  }
+  interface UserData {
+    userId: string, username: string
+  }
+  const cookies = req.headers.cookie;  
   if (cookies) {
     const tokenCookieString = cookies
       .split(";")
@@ -13,11 +25,17 @@ export const onConnection = (connection: WebSocket, req: http.IncomingMessage) =
     if (tokenCookieString) {
       const token = tokenCookieString.split("=")[1];
       if (token) {
-        const decoded  = jwt.verify(token, String(process.env.JWT_SECRET)) as JwtPayload
-            connection.userId = decoded.userId
-            connection.username = decoded.username
+       jwt.verify(token, String(process.env.JWT_SECRET), {}, (err, userData ) => {
+          if (err) throw err;
+          const decoded = userData as JwtPayload;
+          connection.userId = decoded.userId
+          connection.username = decoded.username
+        }) 
+           
       }
     }
   }
+  notifyAboutOnlinePeople();
+  connection.on('message', (message) => onMessage(message, connection, wss))
 };
 

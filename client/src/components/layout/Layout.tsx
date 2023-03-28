@@ -6,10 +6,10 @@ type Props = {}
 
 export const Layout = (props: Props) => {
   return (
-    <>
+    <div className='min-h-screen flex flex-col'>
     <Header/>
-    <Outlet/>
+    <Outlet />
     <Footer/>
-    </>
+    </div>
   )
 }

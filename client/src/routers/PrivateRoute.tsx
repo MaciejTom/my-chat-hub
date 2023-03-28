@@ -7,6 +7,9 @@ export function PrivateRoute({ children }: { children: JSX.Element }) {
   const { user, isLoading } = UseAuthUser();
   console.log(user, isLoading);
 
+  if (isLoading) {
+    return  <Loading/>
+  }
   if (user) {
     return children;
   } else {

@@ -8,6 +8,7 @@ export const loginEndpoint = `${authController}/login`;
 export const authUserEndpoint = `${authController}/authUser`;
 export const logoutEndpoint = `${authController}/logout`;
 
+
 export const logInToChat = async (user: User) => {
   console.log("logInToChat()");
   const body = {
@@ -65,7 +66,7 @@ export const authUser = async () => {
     const response = await fetch(authUserEndpoint, getRequestInit());
     if (response.status === 200) {
       toast.success("You have successfully registered!");
-      console.log("authApi(): registerOnChat() Succeded");
+      console.log("authApi(): authUser() Succeded");
     } else {
       toast.error("Sorry, login failed!");
     }
@@ -96,3 +97,4 @@ export const logout = async () => {
 
   return null;
 };
+
