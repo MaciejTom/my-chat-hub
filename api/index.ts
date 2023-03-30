@@ -8,7 +8,7 @@ import ws from "ws";
 import http from "http";
 //ROUTES
 import { authRouter } from "./routes/auth";
-import { messageRouter } from "./routes/message";
+import { chatRouter } from "./routes/chat";
 const notFoundMiddleware = require("./middleware/not-found");
 import { errorHandlerMiddleware } from "./middleware/error-handler";
 import { onConnection } from "./handlers/connection";
@@ -21,6 +21,7 @@ app.use(express.json());
 
 // app.use(notFoundMiddleware);
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(
   cors({
     credentials: true,
@@ -37,7 +38,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/chat", messageRouter);
+app.use("/api/v1/chat", chatRouter);
 app.use(errorHandlerMiddleware);
 
 /////WEB SOCKET

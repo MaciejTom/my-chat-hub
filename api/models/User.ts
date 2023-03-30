@@ -1,10 +1,11 @@
-import { model, Schema, Model, Document } from "mongoose";
+import { model, Schema, Model, Types  } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 export interface IUser {
   username: string;
-  password: string;
+  password?: string;
+  _id?: Types.ObjectId
 }
 interface IUserDb extends IUser {
   createJWT(): string;
@@ -31,7 +32,7 @@ const UserSchema = new Schema<IUserDb>(
 UserSchema.pre("save", async function () {
   const saltTime = Number(process.env.BCRYPTO_SALT) ?? 10;
   const salt = await bcrypt.genSalt(saltTime);
-  this.password = await bcrypt.hash(this.password, salt);
+  this.password = await bcrypt.hash(this.password!, salt);
 });
 
 UserSchema.methods.createJWT = function (): string {

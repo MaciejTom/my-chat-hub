@@ -3,9 +3,8 @@ import { Route, Navigate, RouteProps } from "react-router-dom";
 import { UseAuthUser } from "../hooks/UseAuthUser";
 import { Loading } from "../components/layout/Loading";
 
-export function PrivateRoute({ children }: { children: JSX.Element }) {
+export function PrivateRoute({ children }: { children: ReactNode }) {
   const { user, isLoading } = UseAuthUser();
-  console.log(user, isLoading);
 
   if (isLoading) {
     return  <Loading/>

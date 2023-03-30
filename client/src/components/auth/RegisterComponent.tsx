@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState, ChangeEvent } from "react";
 import { registerOnChat } from "../../api/authApi";
-import { User } from "../../models/user";
+import { User } from "../../models/User";
 import { authValidator } from "../../utils/authValidator";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
 import { useNavigate } from "react-router-dom";

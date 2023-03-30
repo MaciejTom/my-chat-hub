@@ -1,7 +1,8 @@
 import { authController, postRequestInit, getRequestInit } from "./shared";
 import { TokenResponse } from "../models/authorization/tokenResponse";
-import { User } from "../models/user";
+import { User } from "../models/User";
 import { toast } from "react-toastify";
+import { ChatUser } from "../models/ChatUser";
 
 export const registerEndpoint = `${authController}/register`;
 export const loginEndpoint = `${authController}/login`;
@@ -59,7 +60,7 @@ export const registerOnChat = async (user: User) => {
     return { error: err.message };
   }
 };
-export const authUser = async () => {
+export const authUser = async (): Promise<ChatUser | null> => {
   console.log("authUser()");
 
   try {

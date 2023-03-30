@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { UserContext } from "../contexts/AuthUserContext";
 import authHoc from "../components/authHoc/authHoc";
 type Props = {};
 

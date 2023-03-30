@@ -1,33 +1,32 @@
-import { createContext, useEffect, useState } from 'react'; 
+import { createContext, useEffect, useState, PropsWithChildren, ReactNode } from "react";
 import { authUser } from "../api/authApi";
 
 export interface AuthUserContextInterface {
-  user: null | string,
-  isLoading: boolean,
-  setUser: (user: string | null) => void,
-  id: null | number,
-  setId: (id: null | number) => void
+  user: string;
+  isLoading: boolean;
+  setUser: (user: string) => void;
+  id: string;
+  setId: (id: string) => void;
 }
 
 //set initial value of user to null (pre-login)
 export const AuthUserContext = createContext({} as AuthUserContextInterface);
 
-export function AuthUserProvider(props: React.PropsWithChildren<any>) {
-  const [user, setUser] = useState<null | string>(null);
+export function AuthUserProvider(props: PropsWithChildren<ReactNode>) {
+  const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [id, setId] = useState<null | number>(null);
+  const [id, setId] = useState("");
 
   useEffect(() => {
     const authData = async () => {
       setIsLoading(true);
       const res = await authUser();
-      setId(res.userId);
-      setUser(res.username);
+      setId(res?.userId || "");
+      setUser(res?.username || "");
       setIsLoading(false);
     };
     authData();
   }, []);
-  
 
   return (
     <AuthUserContext.Provider
@@ -36,7 +35,7 @@ export function AuthUserProvider(props: React.PropsWithChildren<any>) {
         setUser,
         isLoading,
         id,
-        setId
+        setId,
       }}
     >
       {props.children}

@@ -6,7 +6,8 @@
 // }
 export interface Message {
    recipient: string,
-   sender: number,
+   sender: string,
    text: string,
    _id: number
+   file?: string,
 }
