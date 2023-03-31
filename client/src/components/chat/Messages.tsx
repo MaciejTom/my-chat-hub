@@ -17,7 +17,7 @@ interface MessagesProps {
 }
 
 export const Messages = (props: MessagesProps) => {
-    
+
   const messagesWithoutDupes = props.messages.reduce(
     (acc: Message[], cur: Message) => {
       if (!acc.some((msg) => msg._id === cur._id)) {
@@ -38,7 +38,7 @@ export const Messages = (props: MessagesProps) => {
 
   return (
     <div className="relative h-full">
-      <div className="overflow-y-scroll absolute top-0 left-0 right-0 bottom-2">
+      <div className="top-0 left-0 right-0 bottom-2">
         {messagesWithoutDupes.map((message) => (
           <div
             key={message._id}

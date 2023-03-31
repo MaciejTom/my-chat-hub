@@ -53,6 +53,7 @@ export const ChatComponent = () => {
     const messageData = JSON.parse(ev.data);
     if ("online" in messageData) {
       showOnlinePeople(messageData.online);
+
       if ("messages" in messageData) {
         if (messageData.sender === selectedUserId) {
           setMessages((prev) => [...prev, { ...messageData }]);
@@ -65,7 +66,12 @@ export const ChatComponent = () => {
     const filteredPeopleArray = peopleArray.filter(
       (person) => person.userId !== id
     );
-    setOnlinePeople(filteredPeopleArray);
+    const uniqPeople = filteredPeopleArray.filter((element, index, self) =>
+    index === self.findIndex((t) => (
+        t.userId === element.userId
+    ))
+);
+    setOnlinePeople(uniqPeople);
   };
 
   const sendMessage = async (
@@ -98,13 +104,14 @@ export const ChatComponent = () => {
   };
 
   return (
-    <div className="flex grow p-10 pt-5 gap-x-4 container self-center text-black">
+    <div className="flex grow p-10 pt-5 gap-y-4 gap-x-0 container self-center text-black flex-col sm:flex-row sm:gap-x-4 sm:gap-y-0">
       <Contacts
         onlinePeople={onlinePeople}
         setSelectedUserId={setSelectedUserId}
         selectedUserId={selectedUserId}
       />
-      <div className="flex flex-col bg-blue-50 w-2/3 p-2 rounded-md">
+      <div className="flex flex-col bg-blue-50 p-2 rounded-md sm:w-2/3 overflow-y-scroll">
+        {/* max-h-[500px] */}
         <div className="flex-grow">
           {!selectedUserId ? (
             <div className="flex h-full flex-grow items-center justify-center">

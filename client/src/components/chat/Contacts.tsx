@@ -28,7 +28,14 @@ export const Contacts = (props: ContactsProps) => {
         const getPeople = async () => {
           if (props.onlinePeople) {
             const people = await fetchPeople();
-            const offlinePeople = people.filter(
+
+            let uniqPeople = people.filter((element, index, self) =>
+            index === self.findIndex((t) => (
+                t.userId === element.userId
+            ))
+        );
+        
+            const offlinePeople = uniqPeople.filter(
               (person) =>
                 !props.onlinePeople.some(
                   (onlinePerson) => onlinePerson.userId === person.userId
@@ -46,7 +53,7 @@ export const Contacts = (props: ContactsProps) => {
       }, [props.onlinePeople]);
 
   return (
-    <div className="bg-white w-1/3 flex flex-col rounded-md">
+    <div className="bg-white flex flex-col rounded-md sm:w-1/3">
     <div className="flex-grow text-black pt-5">
       {props.onlinePeople.map((person) => (
         <Contact

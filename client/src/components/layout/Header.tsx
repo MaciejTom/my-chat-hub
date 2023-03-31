@@ -13,7 +13,7 @@ export const Header = () => {
   
   const handleLogOut = async () => {
     const res = await logout();
-    setUser(null);
+    setUser('');
   }
 
   return (
@@ -26,10 +26,10 @@ export const Header = () => {
               alt="chat-logo"
               className="object-contain h-24 w-40"
             />
-            <h1 className="text-2xl font-bold">MY CHAT HUB</h1>
+            <h1 className="text-2xl font-bold hidden sm:inline">MY CHAT HUB</h1>
           </div>
           {user ? (
-            <ul className="flex items-center whitespace-nowrap text-base">
+            <ul className="flex items-center whitespace-nowrap text-base pl-3">
               <li className="nav-item pr-4">Hey {user}!</li>
               <li>
               <button className="nav-item bg-white rounded-2xl text-black py-1 px-5" onClick={handleLogOut}>Log out</button>
