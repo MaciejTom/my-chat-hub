@@ -23,6 +23,8 @@ export class WebSocketManager {
     req: http.IncomingMessage,
     wss: WebSocketServer
   ) {
+     const cookies = req.headers.cookie;
+    if (cookies) {
     connection.isAlive = true;
     connection.timer = setInterval(() => {
       connection.ping();
@@ -39,8 +41,7 @@ export class WebSocketManager {
       clearTimeout(connection.deathTimer);
     });
 
-    const cookies = req.headers.cookie;
-    if (cookies) {
+   
       const tokenCookieString = cookies
         .split(";")
         .find((str) => str.startsWith("token="));
@@ -60,17 +61,22 @@ export class WebSocketManager {
           );
         }
       }
-    }
-    this.notifyAboutOnlinePeople();
+    
+    
     connection.on("message", (message) =>
       this.onMessage(message, connection, wss)
     );
+    
+    this.notifyAboutOnlinePeople();
+    }
   }
   private notifyAboutOnlinePeople() {
-    [...this.wss.clients].forEach((client) => {
+    const clientsArray = [...this.wss.clients];
+    const clientsArrayUsersName = clientsArray.map(el => el.username);
+    clientsArray.forEach((client) => {
       client.send(
         JSON.stringify({
-          online: [...this.wss.clients].map((c) => ({
+          online: clientsArray.map((c) => ({
             userId: c.userId,
             username: c.username,
           })),

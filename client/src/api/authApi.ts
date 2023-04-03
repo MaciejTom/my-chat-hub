@@ -66,7 +66,6 @@ export const authUser = async (): Promise<ChatUser | null> => {
     }
     return await response.json();
   } catch (err) {
-    toast.error("Sorry, failed to authenticate!");
     console.log("authApi(): registerOnChat() Error: ", err);
   }
 

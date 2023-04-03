@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express";
-
+import { WebSocketManager } from "../webSocket/WebSocketManager";
 import { register, login, authUser, logout } from "../controllers/auth";
 
 export const authRouter = express.Router();

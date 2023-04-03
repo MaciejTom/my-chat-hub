@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const navigate = useNavigate();
-  const { user, isLoading, setUser } = UseAuthUser();
+  const { user, isLoading, setUser, setId, id } = UseAuthUser();
   const handleGoToLogIn = () => {
     navigate('/login')
   }
@@ -15,8 +15,10 @@ export const Header = () => {
   }
   
   const handleLogOut = async () => {
+   
     const res = await logout();
-    setUser('');
+    console.log(id)
+    setId('');
   }
 
   return (

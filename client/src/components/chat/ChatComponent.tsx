@@ -1,6 +1,7 @@
 import { Message } from "../../models/Message";
 import { FormEvent, useEffect, useState } from "react";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
+import { UseWebSocket } from "../../hooks/UseWebSocket";
 import { ChatUser } from "../../models/ChatUser";
 import { fetchMessages } from "../../api/chatApi";
 import { FileObject } from "../../models/FileObject";

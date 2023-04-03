@@ -13,6 +13,7 @@ type ChatFormProps = {
 };
 
 export const ChatForm = (props: ChatFormProps) => {
+  
   const sendFile = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
     const reader = new FileReader();

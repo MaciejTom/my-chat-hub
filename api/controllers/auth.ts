@@ -4,6 +4,8 @@ import StatusCodes from "http-status-codes";
 import {BadRequestError, UnauthenticatedError } from "../errors";
 const cookieParser = require('cookie-parser');
 import jwt from "jsonwebtoken";
+import { WebSocketManager } from "../webSocket/WebSocketManager";
+import { JwtPayload } from "../models/JwtPayload";
 
 export const register = async (req: Request, res: Response) => {
   const user:IUser  = req.body;

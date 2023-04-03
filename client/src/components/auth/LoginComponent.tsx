@@ -13,7 +13,7 @@ export function LoginComponent() {
     password: "",
   } as User);
   const [authValidationError, setAuthValidationError] = useState<string>("");
-  const { setUser: setGlobalUser } = UseAuthUser();
+  const { setUser: setGlobalUser, setId } = UseAuthUser();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -26,6 +26,7 @@ export function LoginComponent() {
     }
     if (res.respond) {
       setGlobalUser(user.username);
+      setId("user.")
     }
   };
   const handleUserChange = (e: ChangeEvent<HTMLInputElement>) => {
