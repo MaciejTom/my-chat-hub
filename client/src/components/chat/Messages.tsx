@@ -28,7 +28,7 @@ export const Messages = (props: MessagesProps) => {
     []
   );
 
-  const {id } = UseAuthUser();
+  const { id } = UseAuthUser();
   const divUnderMessages = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -37,8 +37,8 @@ export const Messages = (props: MessagesProps) => {
   }, [props.messages]);
 
   return (
-    <div className="relative h-full">
-      <div className="top-0 left-0 right-0 bottom-2">
+    <div className="relative h-full overflow-y-scroll">
+      <div className="absolute top-0 left-0 right-0 bottom-2">
         {messagesWithoutDupes.map((message) => (
           <div
             key={message._id}

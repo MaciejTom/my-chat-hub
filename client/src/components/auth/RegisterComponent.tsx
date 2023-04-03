@@ -40,8 +40,8 @@ export function RegisterComponent() {
     navigate("/login");
   };
   return (
-    <div className="flex items-center mt-28 sm:mt-40">
-      <h2>Register on the chat hub!</h2>
+    <div className="flex items-center sm:mt-25 flex-col">
+      <h2 className="mb-16 text-4xl text-center">Register on the chat hub!</h2>
       <form className="w-64 mx-auto mb-12" onSubmit={handleSubmit}>
         <input
           value={user.username}
@@ -72,7 +72,7 @@ export function RegisterComponent() {
         </div>
         <div className="text-center h-12">
           {authValidationError && (
-            <p className="text-red-500 font-bold p-2 border-solid border-2 border-red-600 rounded bg-redTransparent">
+            <p className="font-bold p-2 border-solid border-2 border-red-600 rounded bg-redTransparent">
               {authValidationError}
             </p>
           )}

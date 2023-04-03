@@ -36,7 +36,7 @@ export const ChatForm = (props: ChatFormProps) => {
         value={props.newMessageText}
         onChange={(ev) => props.setNewMessageText(ev.target.value)}
         placeholder="Type your message here"
-        className="bg-white flex-grow border rounded-sm p-2 flex-1"
+        className="bg-white border rounded-sm p-2 w-full"
       />
       <label className="bg-blue-200 p-2 text-gray-600 cursor-pointer rounded-sm border border-blue-200">
         <input type="file" className="hidden" onChange={sendFile} />

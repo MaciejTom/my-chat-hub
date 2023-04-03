@@ -1,15 +1,6 @@
-// export interface ExtWebSocket extends WebSocket {
-//   username?: string;
-//   userId?: string;
-// }
-
-import * as ws from "ws"
 import "ws"
-// declare module 'ws' {
-//   export interface WebSocket extends ws {
+import events from "events";
 
-//   }
-// }
 declare module "ws" {
     class _WS extends WebSocket { }
     export interface WebSocket extends _WS {
@@ -17,10 +8,7 @@ declare module "ws" {
       userId?: string;
     }
   }
-
-// declare module "ws" {
-//   interface WebSocket {
-//     username?: string;
-//     userId?: string;
-//   }
+// declare class WebSocket extends events.EventEmitter {
+//   userId: string;
+//   username: string;
 // }

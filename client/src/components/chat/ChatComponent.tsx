@@ -53,11 +53,12 @@ export const ChatComponent = () => {
     const messageData = JSON.parse(ev.data);
     if ("online" in messageData) {
       showOnlinePeople(messageData.online);
+      return;
+    }
 
-      if ("messages" in messageData) {
-        if (messageData.sender === selectedUserId) {
-          setMessages((prev) => [...prev, { ...messageData }]);
-        }
+    if ("text" in messageData) {
+      if (messageData.sender === selectedUserId) {
+        setMessages((prev) => [...prev, { ...messageData }]);
       }
     }
   };
@@ -78,20 +79,15 @@ export const ChatComponent = () => {
     e: FormEvent<HTMLFormElement> | null,
     file: FileObject | null = null
   ) => {
-    if (e) e.preventDefault();
-    webSocket?.send(
-      JSON.stringify({
-        recipient: selectedUserId,
-        text: newMessageText,
-        file,
-      })
-    );
-    // if (id && selectedUserId) {
-    if (file) {
-      const res = await fetchMessages(selectedUserId);
-      setMessages(res);
-    } else {
-      setNewMessageText("");
+    if (newMessageText && e) {
+      e.preventDefault();
+      webSocket?.send(
+        JSON.stringify({
+          recipient: selectedUserId,
+          text: newMessageText,
+          file,
+        })
+      );
       const newMessage: Message = {
         text: newMessageText,
         sender: id,
@@ -99,23 +95,35 @@ export const ChatComponent = () => {
         _id: Date.now(),
       };
       setMessages((prev) => [...prev, newMessage]);
+      setNewMessageText("");
+    } else {
+      webSocket?.send(
+        JSON.stringify({
+          recipient: selectedUserId,
+          text: newMessageText,
+          file,
+        })
+      );
+      const res = await fetchMessages(selectedUserId);
+      setMessages(res);
     }
-    // }
   };
 
   return (
-    <div className="flex grow p-10 pt-5 gap-y-4 gap-x-0 container self-center text-black flex-col sm:flex-row sm:gap-x-4 sm:gap-y-0">
+    <div className="flex grow p-10 pt-5 gap-y-4 gap-x-0 container self-center text-black flex-col h-full sm:flex-row sm:gap-x-4 sm:gap-y-0">
       <Contacts
         onlinePeople={onlinePeople}
         setSelectedUserId={setSelectedUserId}
         selectedUserId={selectedUserId}
       />
-      <div className="flex flex-col bg-blue-50 p-2 rounded-md sm:w-2/3 overflow-y-scroll">
-        {/* max-h-[500px] */}
+      <div className="flex flex-col bg-blue-50 p-2 rounded-md sm:w-2/3 flex-2">
         <div className="flex-grow">
           {!selectedUserId ? (
             <div className="flex h-full flex-grow items-center justify-center">
-              <div className="text-gray-300">
+              <div className="text-gray-300 sm:hidden">
+                &uarr; Select a person from the topbar
+              </div>
+              <div className="text-gray-300 hidden sm:inline">
                 &larr; Select a person from the sidebar
               </div>
             </div>

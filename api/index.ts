@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 import "express-async-errors";
 import WebSocket, { WebSocketServer } from "ws";
 import ws from "ws";
+import {WebSocketManager} from './webSocket/WebSocketManager'
 import http from "http";
 //ROUTES
 import { authRouter } from "./routes/auth";
@@ -51,12 +52,8 @@ const start = async () => {
       const server = app.listen(port, () =>
         console.log(`Server is listening on port ${port}...`)
       );
-      const wss = new WebSocketServer({ server });
-      wss.on(
-        "connection",
-        (connection: ExtendedWebSocket, req: http.IncomingMessage) =>
-          onConnection(connection, req, wss)
-      );
+     
+      new WebSocketManager(server);
       console.log("NEW CONNECTION");
     } catch (error) {
       console.log(error);

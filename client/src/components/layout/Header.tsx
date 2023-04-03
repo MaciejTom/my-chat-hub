@@ -10,6 +10,9 @@ export const Header = () => {
   const handleGoToLogIn = () => {
     navigate('/login')
   }
+  const handleGoToHome = () => {
+    navigate('/')
+  }
   
   const handleLogOut = async () => {
     const res = await logout();
@@ -18,19 +21,22 @@ export const Header = () => {
 
   return (
     <>
-      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 text-white font-DM text-3xl">
-        <div className="container px-4 mx-auto flex">
-          <div className="w-full flex items-center ">
-            <img
+      <header className="relative flex flex-wrap items-center justify-between px-2 py-3 text-white font-DM text-3xl">
+        <nav className="container px-4 mx-auto flex">
+          <div className="w-full flex ">
+            <div className="flex cursor-pointer items-center" onClick={handleGoToHome}>
+            <img 
               src={logo}
               alt="chat-logo"
               className="object-contain h-24 w-40"
             />
             <h1 className="text-2xl font-bold hidden sm:inline">MY CHAT HUB</h1>
+            </div>
           </div>
+
           {user ? (
             <ul className="flex items-center whitespace-nowrap text-base pl-3">
-              <li className="nav-item pr-4">Hey {user}!</li>
+              {user && <li className="nav-item pr-4">Hey {user}!</li>}
               <li>
               <button className="nav-item bg-white rounded-2xl text-black py-1 px-5" onClick={handleLogOut}>Log out</button>
               </li>
@@ -42,8 +48,8 @@ export const Header = () => {
               </li>
             </ul>
           )}
-        </div>
-      </nav>
+        </nav>
+      </header>
     </>
   );
 };

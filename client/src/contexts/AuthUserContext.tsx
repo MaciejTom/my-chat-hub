@@ -9,7 +9,6 @@ export interface AuthUserContextInterface {
   setId: (id: string) => void;
 }
 
-//set initial value of user to null (pre-login)
 export const AuthUserContext = createContext({} as AuthUserContextInterface);
 
 export function AuthUserProvider(props: PropsWithChildren<ReactNode>) {
