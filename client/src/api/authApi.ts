@@ -3,13 +3,14 @@ import { TokenResponse } from "../models/authorization/tokenResponse";
 import { User } from "../models/User";
 import { toast } from "react-toastify";
 import { ChatUser } from "../models/ChatUser";
+import { AuthRespond } from "../models/AuthRespond";
 
 export const registerEndpoint = `${authController}/register`;
 export const loginEndpoint = `${authController}/login`;
 export const authUserEndpoint = `${authController}/authUser`;
 export const logoutEndpoint = `${authController}/logout`;
 
-export const logInToChat = async (user: User) => {
+export const logInToChat = async (user: User): Promise<AuthRespond> => {
   console.log("logInToChat()");
   const body = {
     ...user,
@@ -22,18 +23,18 @@ export const logInToChat = async (user: User) => {
     if (response.ok) {
       toast.success("You have successfully logged in!");
       console.log("authApi(): loginToChat() Succeded");
-      return { respond: json };
+      return { respond: json.id, error: "" };
     } else {
       throw Error(json.error);
     }
   } catch (err: any) {
     toast.error("Sorry, failed to login!");
     console.log("authApi(): loginForChat() Error: ", err);
-    return { error: err.message };
+    return { respond: "", error: err.message };
   }
 };
 
-export const registerOnChat = async (user: User) => {
+export const registerOnChat = async (user: User): Promise<AuthRespond> => {
   console.log("registerOnChat()");
   const body = {
     ...user,
@@ -46,14 +47,14 @@ export const registerOnChat = async (user: User) => {
     if (response.ok) {
       toast.success("You have successfully registered!");
       console.log("authApi(): registerOnChat() Succeded");
-      return { respond: json };
+      return { respond: json.id, error: "" };
     } else {
       throw Error(json.error);
     }
   } catch (err: any) {
     toast.error("Sorry, failed to register!");
     console.log("authApi(): registerOnChat() Error: ", err);
-    return { error: err.message };
+    return { respond: "", error: err.message };
   }
 };
 export const authUser = async (): Promise<ChatUser | null> => {
@@ -71,7 +72,8 @@ export const authUser = async (): Promise<ChatUser | null> => {
 
   return null;
 };
-export const logout = async () => {
+
+export const logout = async(): Promise<void> => {
   console.log("logout()");
 
   try {
@@ -82,11 +84,8 @@ export const logout = async () => {
     } else {
       toast.error("Sorry, logout failed!");
     }
-    return await response.json();
   } catch (err) {
     toast.error("Sorry, failed to logout!");
     console.log("authApi(): registerOnChat() Error: ", err);
   }
-
-  return null;
 };

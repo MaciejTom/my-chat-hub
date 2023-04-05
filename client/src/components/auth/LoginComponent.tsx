@@ -26,7 +26,7 @@ export function LoginComponent() {
     }
     if (res.respond) {
       setGlobalUser(user.username);
-      setId("user.")
+      setId(res.respond);
     }
   };
   const handleUserChange = (e: ChangeEvent<HTMLInputElement>) => {

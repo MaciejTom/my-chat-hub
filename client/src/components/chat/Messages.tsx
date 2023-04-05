@@ -1,15 +1,10 @@
 import {
-  FormEvent,
-  useContext,
   useEffect,
   useRef,
-  useState,
-  ChangeEventHandler,
-  ChangeEvent,
 } from "react";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
 import { Message } from "../../models/Message";
-import { getAddressToAsset } from "../../utils/getAddresToAsset";
+import { getAddressToAsset } from "../../utils/getAddressToAsset";
 import { PaperClipIcon } from "../icons/PaperClipIcon";
 
 interface MessagesProps {
@@ -46,7 +41,7 @@ export const Messages = (props: MessagesProps) => {
           >
             <div
               className={
-                "text-left inline-block p-2 my-2 rounded-md text-sm " +
+                "text-left inline-block p-2 my-2 rounded-md text-sm break-all " +
                 (message.sender === id
                   ? "bg-blue-500 text-white"
                   : "bg-white text-gray-500")

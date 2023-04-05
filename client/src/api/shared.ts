@@ -5,7 +5,7 @@ export const baseUri = import.meta.env.VITE_API_URL;
 export const authController = `${baseUri}/auth`;
 export const chatController = `${baseUri}/chat`;
 
-export const postRequestInit = (body: any) => {
+export const postRequestInit = (body: any): RequestInit  => {
   return {
     method: ApiMethod.post,
     headers: headersWithAuth(),
@@ -14,7 +14,7 @@ export const postRequestInit = (body: any) => {
   };
 };
 
-export const getRequestInit = () => {
+export const getRequestInit = (): RequestInit => {
   return {
     method: ApiMethod.get,
     headers: headersWithAuth(),

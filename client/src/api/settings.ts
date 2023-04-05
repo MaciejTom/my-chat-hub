@@ -6,9 +6,7 @@ export const baseHeaders = {
 };
 
 export const headersWithAuth = () => {
-  const jwt = browserStorage.get(JWT_STORAGE_KEY);
   return {
     ...baseHeaders,
-    Authorization: 'Bearer ' + jwt,
   };
 };

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, PropsWithChildren, ReactNode } from "react";
+import { createContext, useEffect, useState,  ReactNode } from "react";
 import { authUser } from "../api/authApi";
 
 export interface AuthUserContextInterface {
@@ -11,7 +11,7 @@ export interface AuthUserContextInterface {
 
 export const AuthUserContext = createContext({} as AuthUserContextInterface);
 
-export function AuthUserProvider(props: PropsWithChildren<ReactNode>) {
+export function AuthUserProvider(props: {children: ReactNode}) {
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [id, setId] = useState("");

@@ -1,20 +1,16 @@
 import {
-  FormEvent,
-  useContext,
   useEffect,
-  useRef,
   useState,
-  ChangeEventHandler,
-  ChangeEvent,
 } from "react";
 import { ChatUser } from "../../models/ChatUser";
 import Contact from "./Contact";
-import { fetchMessages, fetchPeople } from "../../api/chatApi";
+import { fetchPeople } from "../../api/chatApi";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
 import { Loading } from "../layout/Loading";
+import { clearPeopleList } from "../../utils/clearListPeopleList";
 
 interface ContactsProps {
-  onlinePeople: ChatUser[];
+  onlinePeople: ChatUser[] | null;
   setSelectedUserId: (id: string) => void;
   selectedUserId: string;
 }
@@ -22,31 +18,25 @@ interface ContactsProps {
 export const Contacts = (props: ContactsProps) => {
   const [offlinePeople, setOfflinePeople] = useState<ChatUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, id, setId, setUser } = UseAuthUser();
+  const { id } = UseAuthUser();
 
   useEffect(() => {
     const getPeople = async () => {
+      if (props.onlinePeople === null) {
+        return
+      }
       const people = await fetchPeople();
-
-      let uniqPeople = people.filter(
-        (element, index, self) =>
-          index === self.findIndex((t) => t.userId === element.userId)
-      );
-      const offlinePeopleWithoutHost = uniqPeople.filter(
-        (person) => person.userId !== id
-      );
-      if (props.onlinePeople.length === 0) {
-        setOfflinePeople(offlinePeopleWithoutHost);
+      const cleanPeople = clearPeopleList(people, id);
+      if (props.onlinePeople?.length === 0) {
+        setOfflinePeople(cleanPeople);
       } else {
-        const peopleWithoutOnlinePeople = uniqPeople.filter(
+        const peopleWithoutOnlinePeople = cleanPeople.filter(
           (person) =>
-            !props.onlinePeople.some(
+            !props.onlinePeople?.some(
               (onlinePerson) => onlinePerson.userId === person.userId
             )
         );
-        const offlinePeopleWithoutHost = peopleWithoutOnlinePeople.filter(
-          (person) => person.userId !== id
-        );
+        const offlinePeopleWithoutHost = clearPeopleList(peopleWithoutOnlinePeople, id);
         setOfflinePeople(offlinePeopleWithoutHost);
       }  
         
@@ -57,14 +47,14 @@ export const Contacts = (props: ContactsProps) => {
   }, [props.onlinePeople]);
 
   return (
-    <div className="bg-white flex flex-col rounded-md overflow-auto relative sm:w-1/3 flex-1 sm:flex-none">
+    <div className="bg-white flex flex-col rounded-md overflow-auto relative flex-1 sm:w-1/3 sm:flex-none">
       {isLoading ? (
         <div className="h-full flex justify-center items-center">
         <Loading />
         </div>
       ) : (
         <div className="flex-grow text-black pb-1 absolute w-full">
-          {props.onlinePeople.map((person) => (
+          {props.onlinePeople?.map((person) => (
             <Contact
               key={person.userId}
               id={person.userId}

@@ -15,16 +15,14 @@ export class WebSocketManager {
     this.wss.on(
       "connection",
       (connection: ExtendedWebSocket, req: http.IncomingMessage) =>
-        this.onConnection(connection, req, this.wss)
+        this.onConnection(connection, req)
     );
   }
   private async onConnection(
     connection: ExtendedWebSocket,
     req: http.IncomingMessage,
-    wss: WebSocketServer
   ) {
-     const cookies = req.headers.cookie;
-    if (cookies) {
+  
     connection.isAlive = true;
     connection.timer = setInterval(() => {
       connection.ping();
@@ -41,7 +39,8 @@ export class WebSocketManager {
       clearTimeout(connection.deathTimer);
     });
 
-   
+    const cookies = req.headers.cookie;
+    if (cookies) {
       const tokenCookieString = cookies
         .split(";")
         .find((str) => str.startsWith("token="));
@@ -61,18 +60,17 @@ export class WebSocketManager {
           );
         }
       }
-    
+    }
     
     connection.on("message", (message) =>
-      this.onMessage(message, connection, wss)
+      this.onMessage(message, connection)
     );
     
     this.notifyAboutOnlinePeople();
-    }
+    
   }
   private notifyAboutOnlinePeople() {
     const clientsArray = [...this.wss.clients];
-    const clientsArrayUsersName = clientsArray.map(el => el.username);
     clientsArray.forEach((client) => {
       client.send(
         JSON.stringify({
@@ -87,11 +85,10 @@ export class WebSocketManager {
   private async onMessage(
     message: MessageEvent,
     connection: ExtendedWebSocket,
-    wss: WebSocketServer
   ) {
     const stringMessage = message.toString();
     const messageData = JSON.parse(stringMessage);
-    console.log("MESSEG RECEIVED")
+    console.log("Message received");
     const { recipient, text, file } = messageData;
     let filename: string | null = null;
     if (file) {
@@ -104,7 +101,7 @@ export class WebSocketManager {
         text,
         file: file ? filename : null,
       });
-      [...wss.clients]
+      [...this.wss.clients]
         .filter((c) => c.userId === recipient)
         .forEach((c) =>
           c.send(

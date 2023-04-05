@@ -1,6 +1,13 @@
 import {Avatar} from "./Avatar";
 
-export default function Contact({id,username,onClick,selected,online}) {
+interface ContactProps {
+  id: string,
+  username: string,
+  onClick: (id: string) => void,
+  selected: boolean,
+  online: boolean,
+}
+export default function Contact({id,username,onClick,selected,online}: ContactProps) {
   return (
     <div key={id} onClick={() => onClick(id)}
          className={"border-b border-gray-100 flex items-center gap-2 cursor-pointer "+(selected ? 'bg-blue-50' : '')}>

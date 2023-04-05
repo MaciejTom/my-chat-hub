@@ -1,11 +1,9 @@
 import { Message } from "../../models/Message";
 import { FormEvent, useEffect, useState } from "react";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
-import { UseWebSocket } from "../../hooks/UseWebSocket";
 import { ChatUser } from "../../models/ChatUser";
 import { fetchMessages } from "../../api/chatApi";
 import { FileObject } from "../../models/FileObject";
-
 import { ChatForm } from "./ChatForm";
 import { Messages } from "./Messages";
 import { Contacts } from "./Contacts";
@@ -13,16 +11,26 @@ import { Contacts } from "./Contacts";
 export const ChatComponent = () => {
   const [webSocket, setWebSocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [onlinePeople, setOnlinePeople] = useState<ChatUser[]>([]);
+  const [onlinePeople, setOnlinePeople] = useState<ChatUser[] | null>(null);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [newMessageText, setNewMessageText] = useState("");
 
-  const { user, id } = UseAuthUser();
+  const { id } = UseAuthUser();
 
   useEffect(() => {
-    if (user) {
-      connectToWs();
-    }
+    const webSocketUrl = import.meta.env.VITE_WS_URL;
+    const ws = new WebSocket(webSocketUrl);
+    ws.addEventListener("message", handleMessage);
+
+    ws.onclose = () => {
+      console.log("disconnected from WebSocket server");
+    };
+
+    setWebSocket(ws);
+
+    return () => {
+      ws.close();
+    };
   }, []);
 
   useEffect(() => {
@@ -36,19 +44,6 @@ export const ChatComponent = () => {
     webSocket?.removeEventListener("message", handleMessage);
     webSocket?.addEventListener("message", handleMessage);
   }, [selectedUserId]);
-
-  function connectToWs() {
-    const webSocketUrl = import.meta.env.VITE_WS_URL;
-    const webSocket = new WebSocket(webSocketUrl);
-    setWebSocket(webSocket);
-    webSocket.addEventListener("message", handleMessage);
-    webSocket.addEventListener("close", () => {
-      setTimeout(() => {
-        console.log("Disconnected. Trying to reconnect.");
-        connectToWs();
-      }, 1000);
-    });
-  }
 
   const handleMessage = (ev: MessageEvent) => {
     const messageData = JSON.parse(ev.data);
@@ -68,11 +63,10 @@ export const ChatComponent = () => {
     const filteredPeopleArray = peopleArray.filter(
       (person) => person.userId !== id
     );
-    const uniqPeople = filteredPeopleArray.filter((element, index, self) =>
-    index === self.findIndex((t) => (
-        t.userId === element.userId
-    ))
-);
+    const uniqPeople = filteredPeopleArray.filter(
+      (element, index, self) =>
+        index === self.findIndex((t) => t.userId === element.userId)
+    );
     setOnlinePeople(uniqPeople);
   };
 
@@ -80,8 +74,10 @@ export const ChatComponent = () => {
     e: FormEvent<HTMLFormElement> | null,
     file: FileObject | null = null
   ) => {
-    if (newMessageText && e) {
+    if (e) {
       e.preventDefault();
+    }
+    if (newMessageText) {
       webSocket?.send(
         JSON.stringify({
           recipient: selectedUserId,
@@ -97,11 +93,12 @@ export const ChatComponent = () => {
       };
       setMessages((prev) => [...prev, newMessage]);
       setNewMessageText("");
-    } else {
+    }
+    if (file) {
       webSocket?.send(
         JSON.stringify({
           recipient: selectedUserId,
-          text: newMessageText,
+          text: "",
           file,
         })
       );

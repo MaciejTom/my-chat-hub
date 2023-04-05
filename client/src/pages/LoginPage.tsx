@@ -6,7 +6,6 @@ type Props = {};
 const LoginPage = (props: Props) => {
   return (
     <>
-      
       <LoginComponent />
     </>
   );

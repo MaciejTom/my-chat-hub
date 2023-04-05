@@ -4,6 +4,6 @@ type Props = {}
 
 export const NotFound = (props: Props) => {
   return (
-    <div>NotFound</div>
+    <div className="text-3xl">Not found</div>
   )
 }
