@@ -20,9 +20,8 @@ export class WebSocketManager {
   }
   private async onConnection(
     connection: ExtendedWebSocket,
-    req: http.IncomingMessage,
+    req: http.IncomingMessage
   ) {
-  
     connection.isAlive = true;
     connection.timer = setInterval(() => {
       connection.ping();
@@ -47,30 +46,24 @@ export class WebSocketManager {
       if (tokenCookieString) {
         const token = tokenCookieString.split("=")[1];
         if (token) {
-          jwt.verify(
+          const userData = jwt.verify(
             token,
-            String(process.env.JWT_SECRET),
-            {},
-            (err, userData) => {
-              if (err) throw err;
-              const decoded = userData as JwtPayload;
-              connection.userId = decoded.userId;
-              connection.username = decoded.username;
-            }
-          );
+            String(process.env.JWT_SECRET)
+          ) as JwtPayload;
+          connection.userId = userData.userId;
+          connection.username = userData.username;
         }
       }
     }
-    
-    connection.on("message", (message) =>
-      this.onMessage(message, connection)
-    );
-    
+
+    connection.on("message", (message) => this.onMessage(message, connection));
+
     this.notifyAboutOnlinePeople();
-    
   }
   private notifyAboutOnlinePeople() {
-    const clientsArray = [...this.wss.clients];
+    const clientsArray = [
+      ...this.wss.clients,
+    ] as unknown as ExtendedWebSocket[];
     clientsArray.forEach((client) => {
       client.send(
         JSON.stringify({
@@ -84,7 +77,7 @@ export class WebSocketManager {
   }
   private async onMessage(
     message: MessageEvent,
-    connection: ExtendedWebSocket,
+    connection: ExtendedWebSocket
   ) {
     const stringMessage = message.toString();
     const messageData = JSON.parse(stringMessage);
@@ -92,7 +85,7 @@ export class WebSocketManager {
     const { recipient, text, file } = messageData;
     let filename: string | null = null;
     if (file) {
-       filename = this.saveFileOnDisc(file);
+      filename = this.saveFileOnDisc(file);
     }
     if (recipient && (text || file)) {
       const messageDoc = await Message.create({
@@ -101,7 +94,10 @@ export class WebSocketManager {
         text,
         file: file ? filename : null,
       });
-      [...this.wss.clients]
+      const clientsArray = [
+        ...this.wss.clients,
+      ] as unknown as ExtendedWebSocket[];
+      clientsArray
         .filter((c) => c.userId === recipient)
         .forEach((c) =>
           c.send(
@@ -115,9 +111,8 @@ export class WebSocketManager {
           )
         );
     }
-
   }
-private saveFileOnDisc(file: FileObject) {
+  private saveFileOnDisc(file: FileObject) {
     const parts = file.name.split(".");
     const ext = parts[parts.length - 1];
     const filename = Date.now() + "." + ext;

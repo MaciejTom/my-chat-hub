@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import {connectDB} from "./db/connect";
 import cookieParser from "cookie-parser";
+import fs from 'fs';
+import path from "path";
 import "express-async-errors";
 
 import {WebSocketManager} from './webSocket/WebSocketManager'
@@ -17,14 +19,22 @@ const config = dotenv.config();
 
 app.use(express.json());
 app.use(cookieParser());
+
+const uploadsPath = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadsPath)){
+    fs.mkdirSync(uploadsPath);
+}
+
 app.use('/uploads', express.static(__dirname + '/uploads'));
+console.log("Client url: " + process.env.CLIENT_URL)
 app.use(
   cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
   })
 );
-const port = 4000;
+const port = 3000;
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");

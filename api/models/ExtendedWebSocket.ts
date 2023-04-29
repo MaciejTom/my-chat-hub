@@ -1,5 +1,5 @@
 export interface ExtendedWebSocket extends WebSocket {
-  on(eventName: string, arg1: (message: MessageEvent) => void);
+  on(eventName: string, arg1: (message: MessageEvent) => void): void;
   username?: string;
   userId?: string;
   isAlive: boolean;

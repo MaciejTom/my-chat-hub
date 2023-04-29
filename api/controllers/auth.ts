@@ -38,10 +38,8 @@ export const login = async (req: Request, res: Response) => {
 export const authUser = (req: Request, res: Response) => {
   const token = req.cookies?.token;
   if (token) {
-    jwt.verify(token, String(process.env.JWT_SECRET), {}, (err, userData) => {
-      if (err) throw err;
-      res.json(userData);
-    });
+    const userData = jwt.verify(token, String(process.env.JWT_SECRET)) as JwtPayload;
+    res.json(userData);
   } else {
     res.status(StatusCodes.UNAUTHORIZED).json('no token');
   }

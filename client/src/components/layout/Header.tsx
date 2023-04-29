@@ -32,6 +32,7 @@ export const Header = () => {
               onClick={handleGoToHome}
             >
               <img
+                width="160"
                 src={logo}
                 alt="chat-logo"
                 className="object-contain h-24 w-40"
