@@ -32,12 +32,13 @@ export const Messages = (props: MessagesProps) => {
   }, [props.messages]);
 
   return (
-    <div className="relative h-full overflow-y-scroll">
+    <div className="relative h-full overflow-y-scroll" data-testid="messages-container">
       <div className="absolute top-0 left-0 right-0 bottom-2">
         {messagesWithoutDupes.map((message) => (
           <div
             key={message._id}
             className={message.sender === id ? "text-right" : "text-left"}
+            data-testid="msg-list-item"
           >
             <div
               className={
@@ -49,7 +50,7 @@ export const Messages = (props: MessagesProps) => {
             >
               {message.text}
               {message.file && (
-                <div className="">
+                <div>
                   <a
                     target="_blank"
                     className="flex items-center gap-1 border-b"

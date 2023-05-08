@@ -35,15 +35,15 @@ export const ChatForm = (props: ChatFormProps) => {
       <input
         type="text"
         value={props.newMessageText}
-        onChange={(ev) => props.setNewMessageText(ev.target.value)}
+        onChange={(e) => props.setNewMessageText(e.target.value)}
         placeholder="Type your message here"
         className="bg-white border rounded-sm p-2 w-full"
       />
       <label className="bg-blue-200 p-2 text-gray-600 cursor-pointer rounded-sm border border-blue-200">
-        <input type="file" className="hidden" onChange={sendFile} />
+        <input role="file-input" type="file" className="hidden" onChange={sendFile} />
         <SendFileIcon />
       </label>
-      <button type="submit" className="bg-blue-500 p-2 text-white rounded-sm">
+      <button role="send-message-button" type="submit" className="bg-blue-500 p-2 text-white rounded-sm">
         <SendMessageIcon />
       </button>
     </form>

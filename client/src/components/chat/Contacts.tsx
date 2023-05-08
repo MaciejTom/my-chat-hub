@@ -3,7 +3,7 @@ import {
   useState,
 } from "react";
 import { ChatUser } from "../../models/ChatUser";
-import Contact from "./Contact";
+import {Contact} from "./Contact";
 import { fetchPeople } from "../../api/chatApi";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
 import { Loading } from "../layout/Loading";

@@ -3,11 +3,11 @@ import { Navigate } from "react-router-dom";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
 import { Loading } from "../layout/Loading";
 
-const authHoc = (Component: React.FC) => () => {
+const AuthHoc = (Component: React.FC) => () => {
   const { user, isLoading } = UseAuthUser();
 
   if (isLoading) {
-    <Loading/>
+    return <Loading/>
   }
   if (!user) {
     return <Component />;
@@ -16,4 +16,4 @@ const authHoc = (Component: React.FC) => () => {
   
 };
 
-export default authHoc;
+export default AuthHoc;

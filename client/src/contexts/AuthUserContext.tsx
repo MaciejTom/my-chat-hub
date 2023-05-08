@@ -7,6 +7,7 @@ export interface AuthUserContextInterface {
   setUser: (user: string) => void;
   id: string;
   setId: (id: string) => void;
+  multiply: () => void;
 }
 
 export const AuthUserContext = createContext({} as AuthUserContextInterface);
@@ -15,6 +16,8 @@ export function AuthUserProvider(props: {children: ReactNode}) {
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [id, setId] = useState("");
+
+  const multiply = () => { setUser("nowwyyyyyyyyyyyy")}
 
   useEffect(() => {
     const authData = async () => {
@@ -35,6 +38,7 @@ export function AuthUserProvider(props: {children: ReactNode}) {
         isLoading,
         id,
         setId,
+        multiply
       }}
     >
       {props.children}

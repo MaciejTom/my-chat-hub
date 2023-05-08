@@ -108,7 +108,7 @@ export const ChatComponent = () => {
   };
 
   return (
-    <div className="flex grow p-10 pt-5 gap-y-4 gap-x-0 container self-center text-black flex-col h-full sm:flex-row sm:gap-x-4 sm:gap-y-0">
+    <div data-test-id="chat-conatiner" className="flex grow p-10 pt-5 gap-y-4 gap-x-0 container self-center text-black flex-col h-full sm:flex-row sm:gap-x-4 sm:gap-y-0">
       <Contacts
         onlinePeople={onlinePeople}
         setSelectedUserId={setSelectedUserId}

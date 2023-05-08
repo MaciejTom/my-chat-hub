@@ -62,7 +62,7 @@ export function LoginComponent() {
           name="password"
         />
         <button className="bg-blue-500 text-white block w-full rounded-sm p-2">
-          Login
+          Log in
         </button>
         <div className="text-center my-2">
           <div>

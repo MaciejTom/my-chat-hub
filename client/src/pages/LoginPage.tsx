@@ -1,5 +1,5 @@
 import React from "react";
-import authHoc from "../components/authHoc/authHoc";
+import AuthHoc from "../components/authHoc/AuthHoc";
 import { LoginComponent } from "../components/auth/LoginComponent";
 type Props = {};
 
@@ -10,4 +10,4 @@ const LoginPage = (props: Props) => {
     </>
   );
 };
-export default authHoc(LoginPage);
+export default AuthHoc(LoginPage);

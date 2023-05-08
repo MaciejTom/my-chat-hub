@@ -1,7 +1,7 @@
 import React from "react";
 import { UseAuthUser } from "../hooks/UseAuthUser";
 import { useNavigate } from "react-router-dom";
-import authHoc from "../components/authHoc/authHoc";
+import AuthHoc from "../components/authHoc/AuthHoc";
 type Props = {};
 
 export const Home = (props: Props) => {
@@ -42,4 +42,4 @@ export const Home = (props: Props) => {
     </div>
   );
 };
-export default authHoc(Home);
+export default AuthHoc(Home);
