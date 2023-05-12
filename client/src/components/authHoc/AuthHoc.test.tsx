@@ -24,7 +24,7 @@ const mockedAuthUser = {
     vi.clearAllMocks();
   });
 
-  it("Displays Loading component when isLoading is true", () => {
+  it("displays Loading component when isLoading is true", () => {
     const AuthHocWithMocked = AuthHoc(() => <div>Mocked Component</div>);
 
     render(<AuthHocWithMocked />);
@@ -32,7 +32,7 @@ const mockedAuthUser = {
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("Navigate to '/chat' when isLoading is false and there is user", () => {
+  it("navigate to '/chat' when isLoading is false and there is user", () => {
     const AuthHocWithMocked = AuthHoc(() => <div>Mocked Component</div>);
     mockedUseAuthUser.mockReturnValue({
       setUser: vi.fn(),
@@ -54,7 +54,8 @@ const mockedAuthUser = {
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
     expect(screen.queryByText("Mocked Component")).not.toBeInTheDocument();
   });
-  it("Displays mocked component when isLoading is false and there is no user", () => {
+  
+  test("displays mocked component when isLoading is false and there is no user", () => {
     const AuthHocWithMocked = AuthHoc(() => <div>Mocked Component</div>);
     mockedUseAuthUser.mockReturnValue({
       setUser: vi.fn(),

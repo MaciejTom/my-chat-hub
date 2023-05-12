@@ -14,8 +14,9 @@ export function RegisterComponent() {
   } as User);
 
   const [authValidationError, setAuthValidationError] = useState<string>("");
-  const { setUser: setGlobalUser } = UseAuthUser();
-  async function handleSubmit(e: SyntheticEvent) {
+  const { setUser: setGlobalUser, setId } = UseAuthUser();
+  
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     if (!authValidator(user, setAuthValidationError)) return;
 
@@ -25,6 +26,7 @@ export function RegisterComponent() {
     }
     if (res.respond) {
       setGlobalUser(user.username);
+      setId(res.respond);
     }
   }
   const handleUserChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +42,7 @@ export function RegisterComponent() {
     navigate("/login");
   };
   return (
-    <div className="flex items-center sm:mt-25 flex-col">
+    <div className="flex items-center flex-col sm:mt-25">
       <h2 className="mb-16 text-4xl text-center">Register on the chat hub!</h2>
       <form className="w-64 mx-auto mb-12" onSubmit={handleSubmit}>
         <input

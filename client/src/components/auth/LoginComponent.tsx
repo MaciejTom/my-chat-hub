@@ -42,7 +42,7 @@ export function LoginComponent() {
     navigate("/register");
   };
   return (
-    <div className="flex items-center sm:mt-25 flex-col">
+    <div className="flex items-center flex-col sm:mt-25">
       <h2 className="mb-16 text-4xl text-center">Log to the chat hub!</h2>
       <form className="w-64 mx-auto mb-12 " onSubmit={handleSubmit}>
         <input

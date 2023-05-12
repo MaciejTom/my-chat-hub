@@ -21,7 +21,7 @@ describe("Layout component", () => {
     });
   });
 
-  it("renders the footer component", () => {
+  test("renders the footer component", () => {
     render(
       <BrowserRouter>
         <Layout />
@@ -29,7 +29,8 @@ describe("Layout component", () => {
     );
     expect(screen.getByText(/Created by/)).toBeInTheDocument();
   });
-  it("renders the header component", () => {
+  
+  test("renders the header component", () => {
     render(
       <BrowserRouter>
         <Layout />

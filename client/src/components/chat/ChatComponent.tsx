@@ -114,7 +114,7 @@ export const ChatComponent = () => {
         setSelectedUserId={setSelectedUserId}
         selectedUserId={selectedUserId}
       />
-      <div className="flex flex-col bg-blue-50 p-2 rounded-md sm:w-2/3 flex-2">
+      <div className="flex flex-col bg-blue-50 p-2 rounded-md flex-2 sm:w-2/3">
         <div className="flex-grow">
           {!selectedUserId ? (
             <div className="flex h-full flex-grow items-center justify-center">

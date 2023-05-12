@@ -2,6 +2,7 @@ import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { ChatForm } from "./ChatForm";
 
 describe("ChatForm", () => {
+
   test("renders the input and button elements", () => {
     render(
       <ChatForm
@@ -17,7 +18,7 @@ describe("ChatForm", () => {
     expect(screen.getByRole("send-message-button")).toBeInTheDocument();
   });
 
-  it("renders the input with value passed as props", () => {
+  test("renders the input with value passed as props", () => {
     render(
       <ChatForm
         sendMessage={expect.any(Function)}
@@ -31,7 +32,7 @@ describe("ChatForm", () => {
     );
   });
 
-  it("calls sendMessage prop function when form is submitted", () => {
+  test("calls sendMessage prop function when form is submitted", () => {
     const sendMessageMock = vi.fn();
     render(
       <ChatForm
@@ -41,11 +42,11 @@ describe("ChatForm", () => {
       />
     );
 
-    fireEvent.click(screen.getByRole("send-message-button"));
+    fireEvent.submit(screen.getByRole("send-message-button"));
     expect(sendMessageMock).toHaveBeenCalledTimes(1);
   });
 
-  it("calls setNewMessageText prop function when input value is changed", () => {
+  test("calls setNewMessageText prop function when input value is changed", () => {
     const setNewMessageTextMock = vi.fn();
     render(
       <ChatForm
@@ -60,7 +61,7 @@ describe("ChatForm", () => {
     expect(setNewMessageTextMock).toHaveBeenCalledWith("Hello world");
   });
 
-  it("calls sendMessage prop function with file is selected", async () => {
+  test("calls sendMessage prop function with file is selected", async () => {
     const sendMessageMock = vi.fn();
     render(
       <ChatForm

@@ -31,7 +31,7 @@ describe("Register Component", () => {
     vi.clearAllMocks();
   });
 
-  it("renders component", () => {
+  test("renders component", () => {
     render(
       <BrowserRouter>
         <LoginComponent />
@@ -41,7 +41,7 @@ describe("Register Component", () => {
     expect(logInHeader).toBeInTheDocument();
   });
 
-  it("renders information about too long password", async () => {
+  test("renders information about too long password", async () => {
     render(
       <BrowserRouter>
         <LoginComponent />
@@ -67,7 +67,7 @@ describe("Register Component", () => {
     );
   });
 
-  it("renders information about no username or password", async () => {
+  test("renders information about no username or password", async () => {
     render(
       <BrowserRouter>
         <LoginComponent />

@@ -1,17 +1,11 @@
-import * as React from "react";
 import {
   render,
   screen,
   fireEvent,
-  getByText,
   waitFor,
-  findByText,
 } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { LoginComponent } from "./LoginComponent";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
-import { logInToChat } from "../../api/authApi";
-import { authValidator } from "../../utils/authValidator";
 import { BrowserRouter } from "react-router-dom";
 import { User } from "../../models/User";
 
@@ -37,7 +31,7 @@ describe("LoginComponent", () => {
     vi.clearAllMocks();
   });
 
-  it("renders component", () => {
+  test("renders component", () => {
     render(
       <BrowserRouter>
         <LoginComponent />
@@ -47,7 +41,7 @@ describe("LoginComponent", () => {
     expect(logInHeader).toBeInTheDocument();
   });
 
-  it("renders information about too long password", async () => {
+  test("renders information about too long password", async () => {
     render(
       <BrowserRouter>
         <LoginComponent />
@@ -73,7 +67,7 @@ describe("LoginComponent", () => {
     );
   });
 
-  it("renders information about no username or password", async () => {
+  test("renders information about no username or password", async () => {
     render(
       <BrowserRouter>
         <LoginComponent />

@@ -7,4 +7,4 @@ RUN yarn run build
 COPY .env ./dist/
 WORKDIR ./dist
 EXPOSE 8080
-CMD [ "yarn", "prodBuild" ]
+CMD [ "yarn", "start" ]

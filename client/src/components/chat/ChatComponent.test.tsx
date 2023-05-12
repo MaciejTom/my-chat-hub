@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { ChatComponent } from "./ChatComponent";
 import { UseAuthUser } from "../../hooks/UseAuthUser";
 import { Message } from "../../models/Message";
@@ -62,7 +68,9 @@ describe("ChatComponent", () => {
 
   test("renders online users who came through websocket", async () => {
     render(<ChatComponent />);
-    global.sendMsg?.({ data: JSON.stringify(mockedOnlineUsers) });
+    act(() => {
+      global.sendMsg?.({ data: JSON.stringify(mockedOnlineUsers) });
+    });
 
     await waitFor(() =>
       expect(screen.getByText("TestUser1")).toBeInTheDocument()
@@ -72,15 +80,20 @@ describe("ChatComponent", () => {
   });
   test("renders a message that came through websockets", async () => {
     const { rerender } = render(<ChatComponent />);
-    global.sendMsg?.({ data: JSON.stringify(mockedOnlineUsers) });
 
-    await waitFor(() =>
-      expect(screen.getByText("TestUser1")).toBeInTheDocument()
-    );
+    act(() => {
+      global.sendMsg?.({ data: JSON.stringify(mockedOnlineUsers) });
+    });
+
+    await waitFor(() => fireEvent.click(screen.getByText("TestUser1")));
+
     fireEvent.click(screen.getByText("TestUser1"));
-    global.sendMsg?.({ data: JSON.stringify(mockedMessage) });
+
+    act(() => {
+      global.sendMsg?.({ data: JSON.stringify(mockedMessage) });
+    });
 
     rerender(<ChatComponent />);
-    await expect(screen.getByText("Hi there!")).toBeInTheDocument();
+    expect(screen.getByText("Hi there!")).toBeInTheDocument();
   });
 });
